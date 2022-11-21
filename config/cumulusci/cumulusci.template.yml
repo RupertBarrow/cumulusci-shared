@@ -1,0 +1,115 @@
+minimum_cumulusci_version: 3.67.0
+
+project:
+  package:
+    namespace: ""
+    api_version: 56.0
+
+  source_format: sfdx
+  git:
+    default_branch: main
+
+tasks:
+  # Switch the User/User's language from default (fr_FR) to en_US
+  # https://salesforce.stackexchange.com/questions/236506/how-to-customize-the-auto-generated-user-of-a-dx-scratch-org
+  update_admin_user_language:
+    group: "Salesforce DX"
+    description: "Changes the admin user's language to English"
+    class_path: cumulusci.tasks.sfdx.SFDXOrgTask
+    options:
+      command: 'force:data:record:update -s User -w "Name=''User User''" -v "LanguageLocaleKey=en_US"'
+
+  run_tests:
+    options:
+      retry_failures:
+        - "unable to obtain exclusive access to this record"
+        - "UNABLE_TO_LOCK_ROW"
+        - "connection was cancelled here"
+        - "None"
+      retry_always: True
+      required_org_code_coverage_percent: 85
+
+  # Install only for Admin profile
+  # https://cumulusci.readthedocs.io/en/stable/tasks.html#update-dependencies
+  update_dependencies:
+    options:
+      security_type: NONE
+  install_managed:
+    options:
+      security_type: NONE
+  install_managed_beta:
+    options:
+      security_type: NONE
+
+flows:
+  rapido_feature: # in feature org
+    group: Rapido
+    steps:
+      1: # Prepare an unmanaged metadata test org and run Apex tests. Intended for use against feature branch commits
+        flow: ci_feature
+      2: # Upload and release a beta 2gp unlocked package version
+        flow: release_unlocked_beta
+        options:
+          create_package_version:
+            version_type: build
+            skip_validation: True
+      3: # Install the latest beta version and runs apex tests from the managed package
+        flow: ci_beta
+
+  rapido_beta: # in beta scratch org
+    group: Rapido
+    steps:
+      1: # Upload and release a beta 2gp unlocked package version
+        flow: release_unlocked_beta
+        options:
+          create_package_version:
+            version_type: minor
+            skip_validation: False
+      2: # Install the latest beta version and runs apex tests from the managed package
+        flow: ci_beta
+
+  rapido_release: # in release and qa org
+    group: Rapido
+    steps:
+      1: # Promote the latest beta 2GP unlocked package version and create a new release in GitHub
+        flow: release_unlocked_production
+      2: # Simulate sunscriber push upgrade
+        flow: push_upgrade_org
+      3: # Runs all apex tests
+        task: run_tests
+      #4: # Schedules a push upgrade of a package version to all orgs listed in push/orgs_qa.txt => QA sandbox
+      #  task: push_qa
+
+  dev_org:
+    steps:
+      3.3:
+        task: update_admin_user_language
+  feature_org:
+    steps:
+      3.3:
+        task: update_admin_user_language
+  beta_org:
+    steps:
+      3.3:
+        task: update_admin_user_language
+  release_org:
+    steps:
+      3.3:
+        task: update_admin_user_language
+  qa_org:
+    steps:
+      3.3:
+        task: update_admin_user_language
+
+orgs:
+  scratch:
+    dev:
+      days: 30
+    feature:
+      days: 1
+    beta:
+      days: 1
+    release:
+      days: 1
+    qa:
+      days: 30

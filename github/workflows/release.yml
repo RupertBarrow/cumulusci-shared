@@ -1,0 +1,27 @@
+name: Promote Release to Production
+on:
+  workflow_dispatch:
+
+  ## Whenever Beta successfully created
+  #workflow_run:
+  #  workflows: ["Create Beta Release"]
+  #  types: [completed] #requested
+
+  ## Whenever a pull request is opened on a release branch
+  pull_request:
+    types:
+      - opened
+    branches:
+      - "release/**"
+
+jobs:
+  rapido_release:
+    name: "Rapido Production Release"
+    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    uses: RupertBarrow/actions/.github/workflows/cci-standard-workflow-run-flow-scratch.yml@main
+    secrets:
+      dev-hub-auth-url: "${{ secrets.SFDX_AUTH_URL_RAPIDOCLOUD_DEVHUB }}"
+      cumulusci-service-github: "${{ secrets.CUMULUSCI_SERVICE_GITHUB }}"
+    with:
+      flow-name: "rapido_release"
+      org-name: "release"

@@ -1,0 +1,18 @@
+# See https://githubnext.com/projects/repo-visualization/
+name: Create Github Visualizer diagram
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - feature/**
+jobs:
+  get_data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Update diagram
+        uses: githubocto/repo-visualizer@main
+        with:
+          excluded_paths: "ignore,.github"
+          output_file: "docs/github-visualizer-diagram.svg"

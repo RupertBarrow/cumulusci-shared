@@ -1,0 +1,22 @@
+name: Feature Tests
+on:
+  workflow_dispatch:
+  #push:
+  #  branches:
+  #    - feature/**
+  pull_request:
+    types:
+      - opened
+    branches:
+      - "main"
+
+jobs:
+  rapido_feature:
+    name: "Rapido Feature Tests"
+    uses: RupertBarrow/actions/.github/workflows/cci-standard-workflow-run-flow-scratch.yml@main
+    secrets:
+      dev-hub-auth-url: "${{ secrets.SFDX_AUTH_URL_RAPIDOCLOUD_DEVHUB }}"
+      cumulusci-service-github: "${{ secrets.CUMULUSCI_SERVICE_GITHUB }}"
+    with:
+      flow-name: "rapido_feature"
+      org-name: "feature"

@@ -1,0 +1,37 @@
+{
+  "orgName": "Rapido Utils library (dev)",
+  "country": "FR",
+  "language": "fr",
+  "adminEmail": "rupert.barrow@lilo.org",
+  "edition": "Enterprise",
+  "objectSettings": {
+    "account": {
+      "sharingModel": "private",
+      "defaultRecordType": "Account"
+    },
+    "contact": {
+      "sharingModel": "private",
+      "defaultRecordType": "Contact"
+    }
+  },
+  "settings": {
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "chatterSettings": {
+      "enableChatter": true
+    },
+    "userManagementSettings": {
+      "enableNewProfileUI": true
+    },
+    "securitySettings": {
+      "enableAdminLoginAsAnyUser": true,
+      "sessionSettings": {
+        "forceRelogin": false
+      }
+    },
+    "languageSettings": {
+      "enableTranslationWorkbench": true
+    }
+  }
+}

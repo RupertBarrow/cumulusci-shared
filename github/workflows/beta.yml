@@ -1,0 +1,22 @@
+name: Create Beta Release
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+  #pull_request:
+  #  types:
+  #    - opened
+  #  branches:
+  #    - "main"
+
+jobs:
+  rapido_beta:
+    name: "Rapido Beta Release"
+    uses: RupertBarrow/actions/.github/workflows/cci-standard-workflow-run-flow-scratch.yml@main
+    secrets:
+      dev-hub-auth-url: "${{ secrets.SFDX_AUTH_URL_RAPIDOCLOUD_DEVHUB }}"
+      cumulusci-service-github: "${{ secrets.CUMULUSCI_SERVICE_GITHUB }}"
+    with:
+      flow-name: "rapido_beta_lib"
+      org-name: "beta"
