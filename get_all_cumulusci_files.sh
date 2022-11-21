@@ -18,3 +18,7 @@ done
 
 # Regenerate the local cumulusci.yml
 cat ./cumulusci.base.yml ./config/cumulusci/cumulusci.template.yml > ./cumulusci.yml
+
+echo
+echo "Files downloaded, cumulusci.yml regenerated"
+echo
