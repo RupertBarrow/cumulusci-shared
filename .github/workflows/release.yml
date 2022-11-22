@@ -14,6 +14,11 @@ on:
     branches:
       - "release/**"
 
+  ## Whenever a release branch is created
+  create:
+    branches:
+      - "release/**"
+
 jobs:
   rapido_release:
     name: "Rapido Production Release"
