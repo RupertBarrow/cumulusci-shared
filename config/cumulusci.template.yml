@@ -1,14 +1,5 @@
 minimum_cumulusci_version: 3.67.0
 
-project:
-  package:
-    namespace: ""
-    api_version: 56.0
-
-  source_format: sfdx
-  git:
-    default_branch: main
-
 tasks:
   # Switch the User/User's language from default (fr_FR) to en_US
   # https://salesforce.stackexchange.com/questions/236506/how-to-customize-the-auto-generated-user-of-a-dx-scratch-org

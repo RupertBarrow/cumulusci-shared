@@ -17,7 +17,7 @@ for FILE in $FILES; do
 done
 
 # Regenerate the local cumulusci.yml
-cat ./cumulusci.base.yml ./config/cumulusci/cumulusci.template.yml > ./cumulusci.yml
+cat ./cumulusci.base.yml ./config/cumulusci.template.yml > ./cumulusci.yml
 
 echo
 echo "Files downloaded, cumulusci.yml regenerated"
