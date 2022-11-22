@@ -18,5 +18,5 @@ jobs:
       dev-hub-auth-url: "${{ secrets.SFDX_AUTH_URL_RAPIDOCLOUD_DEVHUB }}"
       cumulusci-service-github: "${{ secrets.CUMULUSCI_SERVICE_GITHUB }}"
     with:
-      flow-name: "rapido_beta_lib"
+      flow-name: "rapido_beta"
       org-name: "beta"
