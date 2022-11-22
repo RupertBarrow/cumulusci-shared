@@ -7,10 +7,10 @@ Shared configuration of CumulusCI
 To add these Cumulus CI configuration files to your repository :
 
 - download the script `run_cumulusci_update.sh` to the scripts folder of your local repository
-- add a description to your package.json file, like
-  ` "description": "Rapido Utils library",`
+- add a "2gppackagename" entry to your package.json file, like
+  ` "2gppackagename": "Rapido Utils library",`
 - add the following line to your package.json file under scripts :
-  ` "generate_cumulusci_yml": "echo 'Generate cumulusci.yml' && bash scripts/run_cumulusci_update.sh \"${npm_package_description}\""`
+  ` "generate_cumulusci_yml": "echo 'Generate cumulusci.yml' && bash scripts/run_cumulusci_update.sh \"${npm_package_2gppackagename}\""`
 - run `yarn generate_cumulusci_yml`
 
 All the files CumulusCI configuration and workflow files are downloaded and overwrite existing local files with identical names.
