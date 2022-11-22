@@ -65,7 +65,7 @@ flows:
       #4: # Schedules a push upgrade of a package version to all orgs listed in push/orgs_qa.txt => QA sandbox
       #  task: push_qa
 
-  ## Cloned from release_unlocked_beta, , to change only version_type and skip_validation
+  ## Cloned from release_unlocked_beta, to change only version_type=build and skip_validation=True (and version_base=None)
   release_unlocked_feature:
     group: Release Operations
     description: Upload and release a beta 2gp unlocked package version (feature build version)
@@ -76,7 +76,7 @@ flows:
           package_type: Unlocked
           package_name: $project_config.project__package__name
           skip_validation: True
-          version_base: latest_github_release
+          #version_base: latest_github_release
           version_type: build
           force_upload: True
           create_unlocked_dependency_packages: False
