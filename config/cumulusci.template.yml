@@ -1,3 +1,5 @@
+######################################################################################################################
+
 minimum_cumulusci_version: 3.67.0
 
 tasks:
@@ -18,7 +20,7 @@ tasks:
         - "connection was cancelled here"
         - "None"
       retry_always: True
-      required_org_code_coverage_percent: 75
+      required_org_code_coverage_percent: 85
 
   # Install only for Admin profile
   # https://cumulusci.readthedocs.io/en/stable/tasks.html#update-dependencies
@@ -36,53 +38,20 @@ flows:
   rapido_feature: # in feature org
     group: Rapido
     steps:
-      1: # Prepare an unmanaged metadata test org and run Apex tests. Intended for use against feature branch commits
+      #1: # Prepare an unmanaged metadata test org and run Apex tests. Intended for use against feature branch commits
         flow: ci_feature
-      2: # Upload and release a beta 2gp unlocked package version
-        flow: release_unlocked_beta
-        options:
-          create_package_version:
-            version_type: build
-            skip_validation: True
+      2: # Upload and release a beta 2gp unlocked package version (feature build version)
+        flow: release_unlocked_feature
       3: # Install the latest beta version and runs apex tests from the managed package
         flow: ci_beta
 
   rapido_beta: # in beta scratch org
     group: Rapido
     steps:
-      1: # Upload and release a beta 2gp unlocked package version
+      1: # Upload and release a beta 2gp unlocked package version (beta minor version)
         flow: release_unlocked_beta
-        options:
-          create_package_version:
-            version_type: minor
-            skip_validation: False
       2: # Install the latest beta version and runs apex tests from the managed package
         flow: ci_beta
-
-  rapido_release_lib: # release library, with no user tests
-    group: Rapido
-    steps:
-      1: # Promote the latest beta 2GP unlocked package version and create a new release in GitHub
-        flow: release_unlocked_production
-      2: # Install a production release version and runs tests from the managed package
-        flow: ci_release
-
-  rapido_release_app: # in release and qa org
-    group: Rapido
-    steps:
-      0.5: # Runs all apex tests unpackaged, to get coverage
-        task: run_tests
-      1: # Promote the latest beta 2GP unlocked package version and create a new release in GitHub
-        flow: release_unlocked_production
-        options:
-          promote_package_version:
-            promote_dependencies: True
-      2: # Simulate sunscriber push upgrade
-        flow: push_upgrade_org
-      3: # Runs all apex tests
-        task: run_tests
-      #4: # Schedules a push upgrade of a package version to all orgs listed in push/orgs_qa.txt => QA sandbox
-      #  task: push_qa
 
   rapido_release: # in release and qa org
     group: Rapido
@@ -95,6 +64,41 @@ flows:
         task: run_tests
       #4: # Schedules a push upgrade of a package version to all orgs listed in push/orgs_qa.txt => QA sandbox
       #  task: push_qa
+
+  ## Cloned from release_unlocked_beta, , to change only version_type and skip_validation
+  release_unlocked_feature:
+    group: Release Operations
+    description: Upload and release a beta 2gp unlocked package version (feature build version)
+    steps:
+      1:
+        task: create_package_version
+        options:
+          package_type: Unlocked
+          package_name: $project_config.project__package__name
+          skip_validation: True
+          version_base: latest_github_release
+          version_type: build
+          force_upload: True
+          create_unlocked_dependency_packages: False
+      2:
+        task: github_release
+        options:
+          version: ^^create_package_version.version_number
+          version_id: ^^create_package_version.subscriber_package_version_id
+          dependencies: ^^create_package_version.dependencies
+          package_type: 2GP
+          tag_prefix: $project_config.project__git__prefix_beta
+      3:
+        task: github_release_notes
+        ignore_failure: True # Attempt to generate release notes but don't fail build
+        options:
+          link_pr: True
+          publish: True
+          tag: ^^github_release.tag_name
+          include_empty: True
+          version_id: ^^create_package_version.subscriber_package_version_id
+      4:
+        task: github_automerge_main
 
   dev_org:
     steps:
