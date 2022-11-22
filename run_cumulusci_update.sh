@@ -3,7 +3,7 @@
 # Run this script to download all the files and overwrite any of them exisyting locally
 #
 
-PACKAGE_NAME=$1
+PACKAGE_NAME="$1"
 
 REPO="https://raw.githubusercontent.com/RupertBarrow/cumulusci-shared/"
 BRANCH="main"
