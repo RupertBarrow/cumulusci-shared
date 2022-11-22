@@ -59,6 +59,31 @@ flows:
       2: # Install the latest beta version and runs apex tests from the managed package
         flow: ci_beta
 
+  rapido_release_lib: # release library, with no user tests
+    group: Rapido
+    steps:
+      1: # Promote the latest beta 2GP unlocked package version and create a new release in GitHub
+        flow: release_unlocked_production
+      2: # Install a production release version and runs tests from the managed package
+        flow: ci_release
+
+  rapido_release_app: # in release and qa org
+    group: Rapido
+    steps:
+      0.5: # Runs all apex tests unpackaged, to get coverage
+        task: run_tests
+      1: # Promote the latest beta 2GP unlocked package version and create a new release in GitHub
+        flow: release_unlocked_production
+        options:
+          promote_package_version:
+            promote_dependencies: True
+      2: # Simulate sunscriber push upgrade
+        flow: push_upgrade_org
+      3: # Runs all apex tests
+        task: run_tests
+      #4: # Schedules a push upgrade of a package version to all orgs listed in push/orgs_qa.txt => QA sandbox
+      #  task: push_qa
+
   rapido_release: # in release and qa org
     group: Rapido
     steps:
