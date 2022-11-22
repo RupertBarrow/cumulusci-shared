@@ -18,7 +18,7 @@ tasks:
         - "connection was cancelled here"
         - "None"
       retry_always: True
-      required_org_code_coverage_percent: 85
+      required_org_code_coverage_percent: 75
 
   # Install only for Admin profile
   # https://cumulusci.readthedocs.io/en/stable/tasks.html#update-dependencies
