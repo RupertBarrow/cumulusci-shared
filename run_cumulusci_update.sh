@@ -11,6 +11,6 @@ FILE="scripts/get_all_cumulusci_files.sh"
 
 URL="$REPO/$BRANCH/$FILE"
 mkdir -p scripts
-wget $URL -O $FILE
+wget $URL -O $FILE --quiet
 
 bash $FILE "$PACKAGE_NAME"
