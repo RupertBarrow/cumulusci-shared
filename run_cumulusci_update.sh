@@ -7,10 +7,10 @@ PACKAGE_NAME=$1
 
 REPO="https://raw.githubusercontent.com/RupertBarrow/cumulusci-shared/"
 BRANCH="main"
-FILE="get_all_cumulusci_files.sh"
+FILE="scripts/get_all_cumulusci_files.sh"
 
 URL="$REPO/$BRANCH/$FILE"
 mkdir -p scripts
-wget $URL -O scripts/$FILE --quiet
+wget $URL -O $FILE
 
-bash scripts/$FILE "$PACKAGE_NAME"
+bash $FILE "$PACKAGE_NAME"
