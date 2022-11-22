@@ -19,6 +19,9 @@ for FILE in $FILES; do
   sed -e "s/%%PACKAGE_NAME%%/${PACKAGE_NAME}/g" -I '' $FILE
 done
 
+# Regenerate the local cumulusci.yml
+cat ./cumulusci.base.yml ./config/cumulusci.template.yml > ./cumulusci.yml
+
 echo
 echo "CumulusCI configuration regenerated"
 echo

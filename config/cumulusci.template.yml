@@ -1,13 +1,3 @@
-project:
-  name: %%PACKAGE_NAME%%
-  package:
-    name: %%PACKAGE_NAME%%
-    namespace: ""
-    api_version: 56.0
-  source_format: sfdx
-  git:
-    default_branch: main
-
 minimum_cumulusci_version: 3.67.0
 
 tasks:
