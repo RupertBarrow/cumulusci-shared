@@ -15,9 +15,10 @@ on:
       - "release/**"
 
   ## Whenever a release branch is created
-  create:
-    branches:
-      - "release/**"
+  # see : https://github.com/orgs/community/discussions/26286
+  #create:
+  #  branches:
+  #    - "release/**"
 
 jobs:
   rapido_release:
