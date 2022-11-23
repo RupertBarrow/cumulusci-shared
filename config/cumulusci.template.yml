@@ -68,7 +68,7 @@ flows:
   ## Cloned from release_unlocked_beta, to change only version_base=None
   release_unlocked_beta:
     group: Release Operations
-    description: Upload and release a beta 2gp unlocked package version (feature build version)
+    description: Upload and release a beta 2gp unlocked package version (beta minor version)
     steps:
       1:
         task: create_package_version
@@ -76,7 +76,7 @@ flows:
           package_type: Unlocked
           package_name: $project_config.project__package__name
           skip_validation: False
-          version_base: 
+          #version_base: latest_github_release
           version_type: minor
           force_upload: True
           create_unlocked_dependency_packages: False
