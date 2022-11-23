@@ -21,6 +21,7 @@ done
 
 # Regenerate the local cumulusci.yml
 cat ./cumulusci.base.yml ./config/cumulusci.template.yml > ./cumulusci.yml
+rm ./config/cumulusci.template.yml
 
 echo
 echo "CumulusCI configuration regenerated"
