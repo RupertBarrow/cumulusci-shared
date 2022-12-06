@@ -9,8 +9,7 @@ on:
 
   ## Whenever a pull request is opened on a release branch
   pull_request:
-    types:
-      - opened
+    types: [opened, reopened, synchronize]
     branches:
       - "release/**"
 
